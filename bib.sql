@@ -1,3 +1,8 @@
+
+drop schema if exists bib cascade;
+create schema bib;
+set search_path to bib;
+
 -- Creation des tables
 
 -- ====================================================
@@ -6,9 +11,9 @@
 -- Représente les adhérents de la bibliothèque.
 
 CREATE TABLE IF NOT EXISTS Adherent (
-	id_ad 			   SERIAL primary key,
+	id_ad 			   INT primary key,
 	nom 			   VARCHAR(20),
-	email 			   VARCHAR(20),
+	email 			   VARCHAR(100),
 	tel				   CHAR(9),
     num	               VARCHAR(10),
     rue                VARCHAR(100),
@@ -28,10 +33,10 @@ CREATE TABLE IF NOT EXISTS Adherent (
 
 CREATE TABLE IF NOT EXISTS Prenom (
 	id_ad 	INT not null,
-	prenom 	VARCHAR(50)
+	prenom 	VARCHAR(50),
 	
     -- Clé primaire composée (1 adhérent peut avoir plusieurs prénoms)
-    primary key (id_ad, prenom),
+    constraint prnm primary key (id_ad, prenom),
     
     -- Clé étrangère vers Adherent
     CONSTRAINT fk_adherent
@@ -60,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Livre (
 -- Représente les exemplaires de livres
 
 CREATE TABLE IF NOT EXISTS Exemplaire (
-	id_exemp 		SERIAL primary key,
+	id_exemp 		VARCHAR(13) primary key,
 	isbn 			VARCHAR(13),
 	nb_exemplaires 	INT not null,
 	
@@ -78,17 +83,17 @@ CREATE TABLE IF NOT EXISTS Exemplaire (
 --  Insertions de données
 -- ====================================================
 --Adherent
-INSERT INTO Adherent (nom, email, tel, num, rue, cp, ville, pays)
+INSERT INTO Adherent
 values
-	 ('Dupont', 'jean.dup@example.com', '514123456', '123', 'Rue Principale', 'H2X1Y4', 'Montréal', 'Canada'),
-	 ('Martin', 'sophie.mar@example.com', '438987654', '456', 'Boulevard Centre', 'H3Z2A2', 'Québec', 'Canada'),
-	 ('Coll',    'naro.con@example.com', '438555999', '789', 'Avenue Royale', 'H7K3G3', 'Laval', 'Canada'),
-	 ('Nguyen', 'julie.ngu@example',  '514999888', '22',  'Rue St-Denis',    'H2X3L1', 'Montréal', 'Canada'),
-	 ('Smith',  'will.smit@example',  '450101202', '999', 'Chemin Royal',    'J7Y4G7', 'Terrebonne','Canada');
+	 (1,'Dupont', 'jean.dup@example.com', '514123456', '123', 'Rue Principale', 'H2X1Y4', 'Montréal', 'Canada'),
+	 (2,'Martin', 'sophie.mar@example.com', '438987654', '456', 'Boulevard Centre', 'H3Z2A2', 'Québec', 'Canada'),
+	 (3,'Coll',    'naro.con@example.com', '438555999', '789', 'Avenue Royale', 'H7K3G3', 'Laval', 'Canada'),
+	 (4,'Nguyen', 'julie.ngu@example',  '514999888', '22',  'Rue St-Denis',    'H2X3L1', 'Montréal', 'Canada'),
+	 (5,'Smith',  'will.smit@example',  '450101202', '999', 'Chemin Royal',    'J7Y4G7', 'Terrebonne','Canada');
 
 
 --Prenoms
-INSERT INTO Prenom (id_ad, prenom)
+INSERT INTO Prenom
 VALUES
 	(1, 'Jean'),
 	(2, 'Sophie'),
@@ -101,7 +106,7 @@ VALUES
 	(5, 'Will');
 
 --Livres
-INSERT INTO Livre (ISBN, titre, genre, auteur)
+INSERT INTO Livre
 values
 	('9781234567897', 'Le Petit Prince',     'Conte',         'Antoine de Saint-Exupéry'),
 	('9789876543210', 'L’Ombre du vent',     'Roman',         'Carlos Ruiz Zafón'),
@@ -110,13 +115,13 @@ values
 	('9787654321098', '1984',                'Dystopie',      'George Orwell');
 
 --Exemplaires
-INSERT INTO Exemplaire (isbn, nb_exemplaires)
+INSERT INTO Exemplaire
 VALUES
-	('9781234567897', 3),
-	('9789876543210', 5),
-	('9789999999999', 2),
-	('9783456789012', 4),
-	('9787654321098', 6);
+	('1','9781234567897', 3),
+	('2','9789876543210', 2),
+	('3','9789999999999', 2),
+	('4','9783456789012', 3),
+	('5','9787654321098', 1);
 
 
 
