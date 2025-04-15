@@ -1,7 +1,14 @@
 
+begin transaction;
 drop schema if exists bib cascade;
 create schema bib;
 set search_path to bib;
+
+CREATE DOMAIN email_dom AS TEXT
+CHECK (
+  VALUE ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+);
+
 
 -- Creation des tables
 
@@ -13,11 +20,11 @@ set search_path to bib;
 CREATE TABLE IF NOT EXISTS Adherent (
 	id_ad 			   INT primary key,
 	nom 			   VARCHAR(20),
-	email 			   VARCHAR(100),
+	email 			   email_dom,
 	tel				   CHAR(9),
-    num	               VARCHAR(10),
+    num	               VARCHAR(4),
     rue                VARCHAR(100),
-    cp                 VARCHAR(10),       -- code postal
+    cp                 VARCHAR(6),       -- code postal
     ville              VARCHAR(50),
     pays 			   VARCHAR(50)
 
@@ -87,9 +94,9 @@ INSERT INTO Adherent
 values
 	 (1,'Dupont', 'jean.dup@example.com', '514123456', '123', 'Rue Principale', 'H2X1Y4', 'Montréal', 'Canada'),
 	 (2,'Martin', 'sophie.mar@example.com', '438987654', '456', 'Boulevard Centre', 'H3Z2A2', 'Québec', 'Canada'),
-	 (3,'Coll',    'naro.con@example.com', '438555999', '789', 'Avenue Royale', 'H7K3G3', 'Laval', 'Canada'),
-	 (4,'Nguyen', 'julie.ngu@example',  '514999888', '22',  'Rue St-Denis',    'H2X3L1', 'Montréal', 'Canada'),
-	 (5,'Smith',  'will.smit@example',  '450101202', '999', 'Chemin Royal',    'J7Y4G7', 'Terrebonne','Canada');
+	 (3,'Coll',    'naro.con@example.ca', '438555999', '789', 'Avenue Royale', 'H7K3G3', 'Laval', 'Canada'),
+	 (4,'Nguyen', 'julie.ngu@example.ca',  '514999888', '22',  'Rue St-Denis',    'H2X3L1', 'Montréal', 'Canada'),
+	 (5,'Smith',  'will.smit@example.ca',  '450101202', '999', 'Chemin Royal',    'J7Y4G7', 'Terrebonne','Canada');
 
 
 --Prenoms
@@ -122,6 +129,8 @@ VALUES
 	('3','9789999999999', 2),
 	('4','9783456789012', 3),
 	('5','9787654321098', 1);
+
+commit;
 
 
 
