@@ -1,5 +1,5 @@
-
 begin transaction;
+
 drop schema if exists bib cascade;
 create schema bib;
 set search_path to bib;
@@ -72,9 +72,11 @@ CREATE TABLE IF NOT EXISTS Livre (
 -- Représente les exemplaires de livres
 
 CREATE TABLE IF NOT EXISTS Exemplaire (
-	id_exemp 		VARCHAR(13) primary key,
+	id_exemp 		VARCHAR(13),
 	isbn 			VARCHAR(13),
 	nb_exemplaires 	INT not null,
+	
+	primary key (id_exemp,isbn),
 	
 	-- Clé étrangère vers la table des livres
 	constraint fk_livre
@@ -84,6 +86,28 @@ CREATE TABLE IF NOT EXISTS Exemplaire (
 		on update cascade 
 	
 );
+
+create table if not exists details_emprunt (
+
+	id_emprunt text not null,
+	id_ad INT not null,
+	id_exemp varchar(13),
+	isbn varchar(13),
+	primary key (id_ad,id_exemp,isbn),
+	
+	constraint fk_id_ad
+    foreign KEY (id_ad)
+   		references Adherent(id_ad)
+    	on delete cascade
+   		on update cascade,
+	
+	constraint fk_id_exp
+	foreign KEY (id_exemp,isbn)
+		references Exemplaire(id_exemp, isbn)
+	   	on delete cascade
+	   	on update cascade
+);
+
 
 	
 -- ====================================================
@@ -130,15 +154,15 @@ VALUES
 	('4','9783456789012', 3),
 	('5','9787654321098', 1);
 
+INSERT INTO details_emprunt
+VALUES
+    ('E001', 1, '1', '9781234567897'),
+    ('E002', 2, '2', '9789876543210'),
+    ('E003', 3, '3', '9789999999999'),
+    ('E004', 4, '4', '9783456789012'),
+    ('E005', 5, '5', '9787654321098'),
+    ('E006', 2, '1', '9781234567897'),  -- Same exemplaire borrowed by another adherent
+    ('E007', 1, '2', '9789876543210');  
+
 commit;
-
-
-
-
-
-
-
-
-
 	
-
