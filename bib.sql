@@ -108,6 +108,26 @@ create table if not exists details_emprunt (
 	   	on update cascade
 );
 
+create table if not exists details_commande (
+
+	id_commande text not null,
+	id_ad INT not null,
+	id_exemp varchar(13),
+	isbn varchar(13),
+	primary key (id_ad,id_exemp,isbn),
+	
+	constraint fk_id_ad
+    foreign KEY (id_ad)
+   		references Adherent(id_ad)
+    	on delete cascade
+   		on update cascade,
+	
+	constraint fk_id_exp
+	foreign KEY (id_exemp,isbn)
+		references Exemplaire(id_exemp, isbn)
+	   	on delete cascade
+	   	on update cascade
+);
 
 	
 -- ====================================================
@@ -163,6 +183,16 @@ VALUES
     ('E005', 5, '5', '9787654321098'),
     ('E006', 2, '1', '9781234567897'),  -- Same exemplaire borrowed by another adherent
     ('E007', 1, '2', '9789876543210');  
+
+INSERT INTO details_commande
+VALUES
+    ('C001', 1, '1', '9781234567897'),  -- Dupont orders Le Petit Prince
+    ('C002', 2, '2', '9789876543210'),  -- Martin orders L’Ombre du vent
+    ('C003', 3, '4', '9783456789012'),  -- Coll orders Dune
+    ('C004', 4, '3', '9789999999999'),  -- Nguyen orders Introduction à SQL
+    ('C005', 5, '5', '9787654321098'),  -- Smith orders 1984
+    ('C006', 1, '2', '9789876543210'),  -- Dupont orders another book
+    ('C007', 2, '1', '9781234567897');  -- Martin orders Le Petit Prince
 
 commit;
 	
