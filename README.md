@@ -25,17 +25,17 @@ Les entités JPA sont définies sous `com.example` : `Adherant`, `Livre`, `Empr
 ## Installation
 1. Cloner le projet :
    ```bash
-   git clone <url_du_repo>
+   git clone https://github.com/Abdou2111/ProjetIFT2935
    cd bibliotheque-jpa
    ```
-2. Importer le schéma et les données :
+2. Importer le schéma et les données (ou bien l'ouvrir directement sur DBeaver):
    ```bash
-   psql -U abdel -d postgres -f bib.sql
+   psql -U <username> -d <database name> -f bib.sql
    ```
-3. Vérifier la création des tables du schéma `bibliotheque` : `adherant`, `livre`, `emprunt`, `commande`.
+3. Vérifier la création des tables du schéma `bibliotheque` : `adherant`, `livre`, `emprunt`, `commande`...
 
 ## Configuration JPA
-Éditer `src/main/resources/META-INF/persistence.xml` :
+Éditer `src/main/resources/META-INF/persistence.xml` en changeant 'postgres' par le nom de votre base, 'username' par votre username et 'mdp' par votre mot de passe :
 ```xml
 <persistence-unit name="bibliothequePU" transaction-type="RESOURCE_LOCAL">
   <class>com.example.Adherant</class>
@@ -44,8 +44,8 @@ Les entités JPA sont définies sous `com.example` : `Adherant`, `Livre`, `Empr
   <class>com.example.Commande</class>
   <properties>
     <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
-    <property name="javax.persistence.jdbc.user" value="abdel"/>
-    <property name="javax.persistence.jdbc.password" value=""/>
+    <property name="javax.persistence.jdbc.user" value="username"/>
+    <property name="javax.persistence.jdbc.password" value="mdp"/>
     <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
     <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
     <property name="hibernate.hbm2ddl.auto" value="validate"/>
@@ -94,13 +94,4 @@ bibliotheque-jpa/
 ├─ bib.sql
 └─ pom.xml
 ```
-
-## Contribuer
-1. Forker le dépôt  
-2. Créer une branche `feature/*`  
-3. Commit & push  
-4. Ouvrir une pull request
-
-## Licence
-Ce projet est sous licence MIT.
 
